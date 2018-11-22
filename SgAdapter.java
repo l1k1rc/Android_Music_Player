@@ -1,4 +1,4 @@
-package com.linkin.musicprojectl3;
+package com.example.l1k1.musicprojetl3i;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -7,6 +7,8 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.linkin.musicprojectl3.R;
 
 import java.util.ArrayList;
 
@@ -37,8 +39,7 @@ public class SgAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        LinearLayout songLay = (LinearLayout)layoutInflater.inflate
-                (R.layout.song, parent, false);
+        LinearLayout songLay = (LinearLayout)layoutInflater.inflate(R.layout.song, parent, false);
         TextView songView = (TextView)songLay.findViewById(R.id.song_title);
         TextView artistView = (TextView)songLay.findViewById(R.id.song_artist);
         Song currSong = songs.get(position);

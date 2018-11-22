@@ -1,5 +1,4 @@
-package com.linkin.musicprojectl3;
-
+package com.example.l1k1.musicprojetl3i;
 public class Song {
     private long id;
     private String title;

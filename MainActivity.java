@@ -1,4 +1,4 @@
-package com.linkin.musicprojectl3;
+package com.example.l1k1.musicprojetl3i;
 
 import android.Manifest;
 import android.app.Activity;
@@ -6,7 +6,6 @@ import android.app.AlertDialog;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
@@ -21,8 +20,9 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
+
+import com.linkin.musicprojectl3.R;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -60,13 +60,12 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
-
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        Toast.makeText(this,"onResume",Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "onResume", Toast.LENGTH_SHORT).show();
     }
 
     /* Allow to check the permission to have an access in the internal storage of the user's phone */
@@ -83,8 +82,8 @@ public class MainActivity extends AppCompatActivity {
 
                 } else {
                     ActivityCompat.requestPermissions((Activity) context,
-                                    new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
-                                    MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
+                            new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                            MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
                 }
                 return false;
             } else {
@@ -95,6 +94,7 @@ public class MainActivity extends AppCompatActivity {
             return true;
         }
     }
+
     public void showDialog(final String msg, final Context context,
                            final String permission) {
         AlertDialog.Builder alertBuilder = new AlertDialog.Builder(context);
@@ -112,6 +112,7 @@ public class MainActivity extends AppCompatActivity {
         AlertDialog alert = alertBuilder.create();
         alert.show();
     }
+
     /* Allow to parse the internal storage to get the music format */
     public void getSongList() {
         ContentResolver musicResolver = getContentResolver();
@@ -136,6 +137,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
     }
+
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
         MenuInflater inflater = getMenuInflater();
