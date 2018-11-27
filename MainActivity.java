@@ -3,14 +3,18 @@ package com.example.l1k1.musicprojetl3i;
 import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.ComponentName;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -19,6 +23,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -32,8 +37,13 @@ public class MainActivity extends AppCompatActivity {
 
     public static final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 123;
 
+    //For the music informations recolted in the phone
     private ArrayList<Song> songList;
     private ListView songView;
+    //For the mediaPLayer which will launch the music
+    private MusicService musicService;
+    private Intent musicIntent;
+    private boolean musicBound=false;
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
@@ -61,13 +71,39 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
+    private ServiceConnection musicConnection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            MusicService.BinderInstanceMusic binderInstanceMusic = (MusicService.BinderInstanceMusic)service;
+            musicService=binderInstanceMusic.getService();
+            musicBound=true;
+            musicService.setList(songList);
+        }
 
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+            musicBound=false;
+        }
+    };
     @Override
     protected void onResume() {
         super.onResume();
         Toast.makeText(this, "onResume", Toast.LENGTH_SHORT).show();
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if(musicIntent==null){
+            musicIntent= new Intent(this,MusicService.class);
+            bindService(musicIntent,musicConnection,Context.BIND_AUTO_CREATE);
+            startService(musicIntent);
+        }
+    }
+    public void songPicked(View view) {
+        musicService.setSong(Integer.parseInt(view.getTag().toString()));
+        musicService.playSong();
+    }
     /* Allow to check the permission to have an access in the internal storage of the user's phone */
     public boolean checkPermissionREAD_EXTERNAL_STORAGE(
             final Context context) {
@@ -154,13 +190,27 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             case R.id.stats:
                 SgAdapter songAdapter = new SgAdapter(this, songList);
+                //setAdapter renvoie vers getView
                 songView.setAdapter(songAdapter);
                 return true;
             case R.id.quitter:
                 finish();
                 return true;
+            case R.id.action_shuffle:
+                break;
+            case R.id.action_end:
+                stopService(musicIntent);
+                musicService=null;
+                System.exit(0);
+                break;
         }
-        return false;
+        return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    protected void onDestroy() {
+        stopService(musicIntent);
+        musicService=null;
+        super.onDestroy();
+    }
 }
