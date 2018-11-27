@@ -1,4 +1,8 @@
 package com.example.l1k1.musicprojetl3i;
+
+/**
+ * Class {@link Song} to manipulate each song previously parsed
+ */
 public class Song {
     private long id;
     private String title;

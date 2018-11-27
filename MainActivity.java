@@ -33,15 +33,24 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
+/**
+ * For the service :
+ *  -service object which will be a "pointer" on the service used {@link MusicService}
+ *  -ServiceObject object which will manage the connection/disconnection part of the service {onServiceConnected and onServiceDisconnected}
+ *  -BroadCastReceiver for the modifications done by the service
+ *  -bindService call in the onCreate method
+ *  -unBindService call in the onDestroy method
+ */
 public class MainActivity extends AppCompatActivity {
 
     public static final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 123;
 
     //For the music informations recolted in the phone
     private ArrayList<Song> songList;
+    //For the graphical part
     private ListView songView;
     //For the mediaPLayer which will launch the music
-    private MusicService musicService;
+    private MusicService musicService; // the service object for our service created in MusicService class
     private Intent musicIntent;
     private boolean musicBound=false;
 
@@ -102,9 +111,10 @@ public class MainActivity extends AppCompatActivity {
     }
     public void songPicked(View view) {
         musicService.setSong(Integer.parseInt(view.getTag().toString()));
-        musicService.playSong();
+        musicService.playSong(); // method to launch a song selected
     }
     /* Allow to check the permission to have an access in the internal storage of the user's phone */
+    /*Ask to the user the permission <-> in manifest PERMISSION EXTERNAL STORAGE */
     public boolean checkPermissionREAD_EXTERNAL_STORAGE(
             final Context context) {
         int currentAPIVersion = Build.VERSION.SDK_INT;
@@ -130,7 +140,7 @@ public class MainActivity extends AppCompatActivity {
             return true;
         }
     }
-
+    /*When the check is ok*/
     public void showDialog(final String msg, final Context context,
                            final String permission) {
         AlertDialog.Builder alertBuilder = new AlertDialog.Builder(context);
@@ -149,7 +159,7 @@ public class MainActivity extends AppCompatActivity {
         alert.show();
     }
 
-    /* Allow to parse the internal storage to get the music format */
+    /* Allow to parse the internal storage to get the music format file */
     public void getSongList() {
         ContentResolver musicResolver = getContentResolver();
         Uri musicUri = android.provider.MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
@@ -173,7 +183,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
     }
-
+    /* Menu on the right side in the app*/
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
         MenuInflater inflater = getMenuInflater();
@@ -181,7 +191,7 @@ public class MainActivity extends AppCompatActivity {
 
         return true;
     }
-
+    /*Choices displaying by the menu */
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.option:
@@ -206,9 +216,11 @@ public class MainActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
-
+    /*When the app is killed*/
     @Override
     protected void onDestroy() {
+        Toast.makeText(this,"End of service",Toast.LENGTH_SHORT).show();
+        unbindService(musicConnection);
         stopService(musicIntent);
         musicService=null;
         super.onDestroy();

@@ -13,6 +13,10 @@ import android.provider.MediaStore;
 
 import java.util.ArrayList;
 
+/**
+ * {@link MusicService} is the class which will read a music selected by the user in a service activity, when
+ * the app is closed, but not destroyed, the service can continue to read the music
+ */
 public class MusicService extends Service implements MediaPlayer.OnPreparedListener, MediaPlayer.OnErrorListener, MediaPlayer.OnCompletionListener {
 
     private MediaPlayer mediaPlayer;
@@ -29,6 +33,7 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
         initMusicPlayer();
 
     }
+    // for the musicPlayer class
     public void initMusicPlayer(){
         mediaPlayer.setWakeMode(getApplicationContext(),PowerManager.PARTIAL_WAKE_LOCK);
         mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
@@ -40,6 +45,7 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
     public void setList(ArrayList<Song> theSongs){
         this.songs=theSongs;
     }
+    //To pay a song bye the ID
     public void playSong(){
         mediaPlayer.reset();
         Song playSong = songs.get(songPosn);

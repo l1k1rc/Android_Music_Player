@@ -12,11 +12,17 @@ import com.linkin.musicprojectl3.R;
 
 import java.util.ArrayList;
 
+/**
+ * Class which will modify the view of the main activity
+ */
 public class SgAdapter extends BaseAdapter {
 
+    //for the song parsed
     private ArrayList<Song> songs;
+    //layout for the activity
     private LayoutInflater layoutInflater;
 
+    //Called in MainActivity class
     public SgAdapter(Context c, ArrayList<Song> theSongs) {
         this.songs = theSongs;
         this.layoutInflater = LayoutInflater.from(c);
@@ -37,6 +43,7 @@ public class SgAdapter extends BaseAdapter {
         return 0;
     }
 
+    //Build the view
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         LinearLayout songLay = (LinearLayout)layoutInflater.inflate(R.layout.song, parent, false);
