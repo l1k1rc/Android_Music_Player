@@ -18,6 +18,9 @@ public class SecondActivity extends AppCompatActivity {
 
     private TextView titleView;
     private TextView artistView;
+
+    private MusicController musicController;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,6 +34,6 @@ public class SecondActivity extends AppCompatActivity {
 
         titleView.setText(title);
         artistView.setText(artist);
-
+        //musicController.show(0);
     }
 }
