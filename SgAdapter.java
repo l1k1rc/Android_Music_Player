@@ -1,19 +1,24 @@
 package com.example.l1k1.musicprojetl3i;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.linkin.musicprojectl3.R;
+import com.example.l1k1.musicprojetl3i.MainActivity;
 
 import java.util.ArrayList;
 
 /**
- * Class which will modify the view of the main activity
+ * Class which will be used by the ListView from the class Adapter
  */
 public class SgAdapter extends BaseAdapter {
 
@@ -46,8 +51,8 @@ public class SgAdapter extends BaseAdapter {
     //Build the view
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        LinearLayout songLay = (LinearLayout)layoutInflater.inflate(R.layout.song, parent, false);
-        TextView songView = (TextView)songLay.findViewById(R.id.song_title);
+        @SuppressLint("ViewHolder") LinearLayout songLay = (LinearLayout)layoutInflater.inflate(R.layout.song, parent, false);
+        final TextView songView = (TextView)songLay.findViewById(R.id.song_title);
         TextView artistView = (TextView)songLay.findViewById(R.id.song_artist);
         Song currSong = songs.get(position);
         songView.setText(currSong.getTitle());

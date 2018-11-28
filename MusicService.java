@@ -30,17 +30,13 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
         songPosn = 0;
         mediaPlayer = new MediaPlayer();
 
-        initMusicPlayer();
-
-    }
-    // for the musicPlayer class
-    public void initMusicPlayer(){
         mediaPlayer.setWakeMode(getApplicationContext(),PowerManager.PARTIAL_WAKE_LOCK);
         mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
 
         mediaPlayer.setOnPreparedListener(this);
         mediaPlayer.setOnCompletionListener(this);
         mediaPlayer.setOnErrorListener(this);
+
     }
     public void setList(ArrayList<Song> theSongs){
         this.songs=theSongs;
@@ -87,7 +83,7 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
     public void onPrepared(MediaPlayer mp) {
         mp.start();
     }
-    public class BinderInstanceMusic extends Binder {
+    class BinderInstanceMusic extends Binder {
         MusicService getService(){
             return MusicService.this;
         }
