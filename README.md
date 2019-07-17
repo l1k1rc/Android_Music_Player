@@ -1,5 +1,4 @@
 # musicAndroidProjectL3
-Castor and Raccoon
 
 ic_launcher_background.xml et *.img dans /res/drawable/
 activity_main.xml et song.xml dans /res/layout/
